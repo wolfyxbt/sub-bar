@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+	    <meta charset="UTF-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	    <title>sub.bar</title>
+	    <link rel="icon" href="./favicon/favicon.ico" />
+	    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png" />
+	    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png" />
+	    <script>
+	      // 首屏预读“今天高亮”偏好：避免刷新时开关先显示为开启、随后又被 JS 纠正为关闭而出现闪烁
+	      (function () {
+	        try {
+	          var key = "subscription-tracker:pref:today-highlight:v1";
+	          var raw = localStorage.getItem(key);
+	          var enabled = true;
+	          if (raw != null) {
+	            var v = String(raw).trim().toLowerCase();
+	            if (v === "0" || v === "false" || v === "off" || v === "no") enabled = false;
+	            if (v === "1" || v === "true" || v === "on" || v === "yes") enabled = true;
+	          }
+	          document.documentElement.dataset.todayHighlight = enabled ? "1" : "0";
+	        } catch (e) {
+	          // ignore
+	        }
+	      })();
+	    </script>
+	    <link rel="stylesheet" href="./css/styles.css" />
+	  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header__title">
+        <div class="app-header__brand">
+          <h1>sub.bar</h1>
+          <div class="app-header__links" aria-label="外部跳转">
+            <a class="nav-link nav-link--x" href="https://x.com/wolfyxbt" target="_blank" rel="noopener noreferrer" aria-label="跳转到 X">
+              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50" aria-hidden="true" focusable="false">
+                <path d="M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z"></path>
+              </svg>
+            </a>
+            <a class="nav-link nav-link--github" href="https://github.com/wolfyxbt/sub-bar" target="_blank" rel="noopener noreferrer" aria-label="跳转到 Github">
+              <svg width="800px" height="800px" viewBox="0 0 73 73" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false">
+                <title>team-collaboration/version-control/github</title>
+                <desc>Created with Sketch.</desc>
+                <g id="team-collaboration/version-control/github" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="container" transform="translate(2.000000, 2.000000)" fill-rule="nonzero">
+                    <rect id="mask" stroke="#000000" stroke-width="2" fill="#000000" x="-1" y="-1" width="71" height="71" rx="14"></rect>
+                    <path d="M58.3067362,21.4281798 C55.895743,17.2972267 52.6253846,14.0267453 48.4948004,11.615998 C44.3636013,9.20512774 39.8535636,8 34.9614901,8 C30.0700314,8 25.5585181,9.20549662 21.4281798,11.615998 C17.2972267,14.0266224 14.0269912,17.2972267 11.615998,21.4281798 C9.20537366,25.5590099 8,30.0699084 8,34.9607523 C8,40.8357654 9.71405782,46.1187277 13.1430342,50.8109917 C16.5716416,55.5036246 21.0008949,58.7507436 26.4304251,60.5527176 C27.0624378,60.6700211 27.5302994,60.5875152 27.8345016,60.3072901 C28.1388268,60.0266961 28.290805,59.6752774 28.290805,59.2545094 C28.290805,59.1842994 28.2847799,58.5526556 28.2730988,57.3588401 C28.2610487,56.1650247 28.2553926,55.1235563 28.2553926,54.2349267 L27.4479164,54.3746089 C26.9330843,54.468919 26.2836113,54.5088809 25.4994975,54.4975686 C24.7157525,54.4866252 23.9021284,54.4044881 23.0597317,54.2517722 C22.2169661,54.1004088 21.4330982,53.749359 20.7075131,53.1993604 C19.982297,52.6493618 19.4674649,51.9294329 19.1631397,51.0406804 L18.8120898,50.2328353 C18.5780976,49.6950097 18.2097104,49.0975487 17.7064365,48.4426655 C17.2031625,47.7871675 16.6942324,47.3427912 16.1794003,47.108799 L15.9336039,46.9328437 C15.7698216,46.815909 15.6178435,46.6748743 15.4773006,46.511215 C15.3368806,46.3475556 15.2317501,46.1837734 15.1615401,46.0197452 C15.0912072,45.855594 15.1494901,45.7209532 15.3370036,45.6153308 C15.5245171,45.5097084 15.8633939,45.4584343 16.3551097,45.4584343 L17.0569635,45.5633189 C17.5250709,45.6571371 18.104088,45.9373622 18.7947525,46.4057156 C19.4850481,46.8737001 20.052507,47.4821045 20.4972521,48.230683 C21.0358155,49.1905062 21.6846737,49.9218703 22.4456711,50.4251443 C23.2060537,50.9284182 23.9727072,51.1796248 24.744894,51.1796248 C25.5170807,51.1796248 26.1840139,51.121096 26.7459396,51.0046532 C27.3072505,50.8875956 27.8338868,50.7116403 28.3256025,50.477771 C28.5362325,48.9090515 29.1097164,47.7039238 30.0455624,46.8615271 C28.7116959,46.721353 27.5124702,46.5102313 26.4472706,46.2295144 C25.3826858,45.9484285 24.2825656,45.4922482 23.1476478,44.8597436 C22.0121153,44.2280998 21.0701212,43.44374 20.3214198,42.5080169 C19.5725954,41.571802 18.9580429,40.3426971 18.4786232,38.821809 C17.9989575,37.300306 17.7590632,35.5451796 17.7590632,33.5559381 C17.7590632,30.7235621 18.6837199,28.3133066 20.5326645,26.3238191 C19.6665366,24.1944035 19.7483048,21.8072644 20.778215,19.1626478 C21.4569523,18.951772 22.4635002,19.1100211 23.7973667,19.6364115 C25.1314792,20.1630477 26.1082708,20.6141868 26.7287253,20.9882301 C27.3491798,21.3621504 27.8463057,21.6790175 28.2208409,21.9360032 C30.3978419,21.3277217 32.644438,21.0235195 34.9612442,21.0235195 C37.2780503,21.0235195 39.5251383,21.3277217 41.7022622,21.9360032 L43.0362517,21.0938524 C43.9484895,20.5319267 45.0257392,20.0169716 46.2654186,19.5488642 C47.5058357,19.0810026 48.4543466,18.9521409 49.1099676,19.1630167 C50.1627483,21.8077563 50.2565666,24.1947724 49.3901927,26.324188 C51.2390143,28.3136755 52.1640399,30.7245457 52.1640399,33.556307 C52.1640399,35.5455485 51.9232849,37.3062081 51.444357,38.8393922 C50.9648143,40.3728223 50.3449746,41.6006975 49.5845919,42.5256002 C48.8233486,43.4503799 47.8753296,44.2285916 46.7404118,44.8601125 C45.6052481,45.4921252 44.504759,45.9483056 43.4401742,46.2293914 C42.3750975,46.5104772 41.1758719,46.7217219 39.8420054,46.8621419 C41.0585683,47.9149226 41.6669728,49.5767225 41.6669728,51.846804 L41.6669728,59.2535257 C41.6669728,59.6742937 41.8132948,60.0255895 42.1061847,60.3063064 C42.3987058,60.5865315 42.8606653,60.6690374 43.492678,60.5516109 C48.922946,58.7498829 53.3521992,55.5026409 56.7806837,50.810008 C60.2087994,46.117744 61.923472,40.8347817 61.923472,34.9597686 C61.9222424,30.0695396 60.7162539,25.5590099 58.3067362,21.4281798 Z" id="Shape" fill="#FFFFFF"></path>
+                  </g>
+                </g>
+              </svg>
+            </a>
+            <a class="btn btn--with-icon btn--bmc" href="https://www.buymeacoffee.com/wolfyxbt" target="_blank" rel="noopener noreferrer" aria-label="Buy me a coffee">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 8h11a3 3 0 0 1 0 6h-1" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 8v6a4 4 0 0 0 4 4h5a4 4 0 0 0 4-4v-2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7 5c0 1 1 1 1 2s-1 1-1 2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M11 5c0 1 1 1 1 2s-1 1-1 2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>Buy me a coffee</span>
+            </a>
+          </div>
+        </div>
+        <p class="app-header__subtitle"></p>
+      </div>
+
+      <div class="app-header__right">
+        <div class="app-header__stats" aria-label="统计摘要">
+          <div class="stat">
+            <div class="stat__header">
+              <div class="stat__label">活跃订阅</div>
+              <span class="stat__header-spacer" aria-hidden="true"></span>
+            </div>
+            <div class="stat__value" id="statActiveCount">0</div>
+          </div>
+          <div class="stat stat--selected">
+            <div class="stat__header">
+              <div class="stat__label">选取区域</div>
+              <button
+                type="button"
+                class="stat-toggle stat-toggle--selected"
+                id="toggleSelectedHighlight"
+                role="switch"
+                aria-checked="false"
+                aria-label="切换选取高亮"
+              ></button>
+            </div>
+            <div class="stat__value stat__value--mono" id="statSelectedMeta">-</div>
+          </div>
+          <div class="stat stat--today">
+            <div class="stat__header">
+              <div class="stat__label">今日花费</div>
+              <button
+                type="button"
+                class="stat-toggle"
+                id="toggleTodayHighlight"
+                role="switch"
+                aria-checked="true"
+                aria-label="切换今日高亮"
+              ></button>
+            </div>
+            <div class="stat__value stat__value--mono" id="statTodayCost">-</div>
+          </div>
+          <div class="stat stat--month">
+            <div class="stat__header">
+              <div class="stat__label">本月花费</div>
+              <button
+                type="button"
+                class="stat-toggle stat-toggle--month"
+                id="toggleMonthHighlight"
+                role="switch"
+                aria-checked="false"
+                aria-label="切换本月高亮"
+              ></button>
+            </div>
+            <div class="stat__value stat__value--mono" id="statMonthlyTotal">-</div>
+          </div>
+          <div class="stat stat--year">
+            <div class="stat__header">
+              <div class="stat__label">今年花费</div>
+              <button
+                type="button"
+                class="stat-toggle stat-toggle--year"
+                id="toggleYearHighlight"
+                role="switch"
+                aria-checked="false"
+                aria-label="切换今年高亮"
+              ></button>
+            </div>
+            <div class="stat__value stat__value--mono" id="statYearlyTotal">-</div>
+          </div>
+        </div>
+      </div>
+	    </header>
+
+	    <main class="app-main">
+	      <section class="panel panel--timeline" aria-label="可视化时间坐标轴">
+				        <div class="timeline-toolbar">
+			          <div class="timeline-toolbar__left">
+			            <div class="cycle-picker sort-picker" id="sortPicker" aria-label="排序方式">
+				              <button
+				                type="button"
+				                class="cycle-picker__button"
+			                data-role="button"
+			                aria-haspopup="listbox"
+			                aria-expanded="false"
+			              >
+			                <span class="cycle-picker__value" data-role="value">即将到期</span>
+			                <span class="cycle-picker__chevron" aria-hidden="true">▾</span>
+			              </button>
+			              <div class="cycle-picker__menu" data-role="menu" hidden>
+			                <div class="cycle-picker__list" data-role="list" role="listbox" aria-label="排序方式列表"></div>
+			              </div>
+			              <input type="hidden" id="sortMode" value="next-charge" />
+			            </div>
+                  <div class="toolbar-actions" aria-label="数据导入导出">
+                    <button class="btn btn--with-icon" type="button" id="btnExport">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 3v12m0 0l4-4m-4 4l-4-4M4 21h16" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span>导出数据</span>
+                    </button>
+                    <button class="btn btn--with-icon" type="button" id="btnImport">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 21V9m0 0l4 4m-4-4l-4 4M4 3h16" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span>导入数据</span>
+                    </button>
+                    <input type="file" id="importFile" accept="application/json" hidden />
+                  </div>
+			          </div>
+			          <div class="timeline-toolbar__right">
+			            <button class="btn" type="button" id="btnToday">跳转到今日</button>
+			            <div class="zoom-presets" aria-label="缩放预设">
+			              <button class="btn zoom-preset-btn" type="button" data-zoom-preset="1">年</button>
+			              <button class="btn zoom-preset-btn" type="button" data-zoom-preset="2">月</button>
+			              <button class="btn zoom-preset-btn" type="button" data-zoom-preset="32">日</button>
+			            </div>
+			          </div>
+	        </div>
+
+				        <div class="timeline-scroller" id="timelineScroller" aria-label="时间轴滚动区域">
+				          <div class="timeline-grid" id="timelineGrid">
+				            <div class="corner" id="timelineCorner" aria-label="订阅服务列标题">
+				              <div class="corner-grid">
+                <span class="corner-grid__cell corner-grid__cell--icon">链<br />接</span>
+                <span class="corner-grid__cell corner-grid__cell--name">名<br />称</span>
+                <button class="corner-grid__cell corner-grid__cell--price" id="priceSortToggle" type="button">
+                  <span class="corner-grid__price-wrap">
+                    <span class="corner-grid__price-label">价格<br />(USD)</span>
+                  </span>
+                </button>
+                <span class="corner-grid__cell corner-grid__cell--cycle">周<br />期</span>
+			              </div>
+			            </div>
+			            <div class="x-axis" id="xAxis"></div>
+			            <div class="y-axis" id="yAxis"></div>
+			            <div class="canvas" id="canvas"></div>
+			            <div class="summary-corner" id="timelineSummaryCorner">
+            <span class="summary-corner__title" data-role="summary-corner-title">花费合计（USD）</span>
+			            </div>
+			            <div class="summary-axis" id="summaryAxis" aria-label="花费合计（按日/月/年）"></div>
+			          </div>
+			        </div>
+		      </section>
+	    </main>
+
+	    <div class="modal" id="subscriptionModal" hidden>
+	      <div class="modal__backdrop" data-role="backdrop" aria-hidden="true"></div>
+		      <section class="panel panel--form modal__panel" aria-label="订阅信息弹窗" role="dialog" aria-modal="true">
+		        <div class="panel__header panel__header--modal">
+		          <div class="panel__titlebar">
+		            <h2 id="formTitle">添加订阅</h2>
+		            <button type="button" class="btn btn--icon modal__close" id="btnCloseModal" aria-label="关闭">×</button>
+		          </div>
+          <p class="panel__hint"></p>
+		        </div>
+
+		        <form id="subscriptionForm" class="form">
+		          <input type="hidden" id="subId" name="id" />
+
+		          <div class="form-split" aria-label="订阅信息（左：必填，右：可选）">
+		            <div class="form-split__col form-split__col--required">
+		              <div class="form-row">
+		                <label for="subName">服务名称 <span class="req">*</span></label>
+		                <input id="subName" name="name" type="text" placeholder="例如：Netflix" required maxlength="40" />
+		              </div>
+
+		              <div class="form-row form-row--cols form-row--price">
+		                <label for="subPrice">订阅价格 <span class="req">*</span></label>
+		                <input
+		                  id="subPrice"
+		                  name="price"
+		                  type="number"
+		                  inputmode="decimal"
+		                  min="0"
+		                  step="0.01"
+		                  placeholder="15.99"
+		                  required
+		                />
+		                <div class="currency-picker" id="currencyPicker">
+		                  <button
+		                    type="button"
+		                    class="currency-picker__button"
+		                    id="subCurrencyButton"
+		                    data-role="button"
+		                    aria-haspopup="listbox"
+		                    aria-expanded="false"
+		                    aria-required="true"
+		                    aria-label="货币单位"
+		                  >
+		                    <span class="currency-picker__value" data-role="value">USD（美元）</span>
+		                    <span class="currency-picker__chevron" aria-hidden="true">▾</span>
+		                  </button>
+		                  <div class="currency-picker__menu" data-role="menu" hidden>
+		                    <div class="currency-picker__list" data-role="list" role="listbox" aria-label="货币列表"></div>
+		                    <div class="currency-picker__index" data-role="index" aria-label="字母索引"></div>
+		                  </div>
+		                  <input type="hidden" id="subCurrency" name="currency" value="USD" />
+		                </div>
+		              </div>
+
+		              <div class="form-row">
+		                <label for="subCycleButton">订阅周期 <span class="req">*</span></label>
+		                <div class="cycle-picker" id="cyclePicker">
+		                  <button
+		                    type="button"
+		                    class="cycle-picker__button"
+		                    id="subCycleButton"
+		                    data-role="button"
+		                    aria-haspopup="listbox"
+		                    aria-expanded="false"
+		                    aria-required="true"
+		                  >
+		                    <span class="cycle-picker__value" data-role="value">月度</span>
+		                    <span class="cycle-picker__chevron" aria-hidden="true">▾</span>
+		                  </button>
+		                  <div class="cycle-picker__menu" data-role="menu" hidden>
+		                    <div class="cycle-picker__list" data-role="list" role="listbox" aria-label="订阅周期列表"></div>
+		                  </div>
+		                  <input type="hidden" id="subCycle" name="cycle" value="monthly" />
+		                </div>
+		              </div>
+
+		              <div class="form-row">
+		                <label for="subStartYear">开始日期 <span class="req">*</span></label>
+		                <div class="date-inputs" id="startDateWheel">
+		                  <input
+		                    id="subStartYear"
+		                    name="startYear"
+		                    type="text"
+		                    inputmode="numeric"
+		                    placeholder="YYYY"
+		                    maxlength="4"
+		                    autocomplete="off"
+		                    spellcheck="false"
+		                    required
+		                    aria-label="开始日期年（YYYY）"
+		                  />
+		                  <span class="date-inputs__sep">/</span>
+		                  <input
+		                    id="subStartMonth"
+		                    name="startMonth"
+		                    type="text"
+		                    inputmode="numeric"
+		                    placeholder="MM"
+		                    maxlength="2"
+		                    autocomplete="off"
+		                    spellcheck="false"
+		                    required
+		                    aria-label="开始日期月（MM）"
+		                  />
+		                  <span class="date-inputs__sep">/</span>
+		                  <input
+		                    id="subStartDay"
+		                    name="startDay"
+		                    type="text"
+		                    inputmode="numeric"
+		                    placeholder="DD"
+		                    maxlength="2"
+		                    autocomplete="off"
+		                    spellcheck="false"
+		                    required
+		                    aria-label="开始日期日（DD）"
+		                  />
+		                  <input id="subStartDate" name="startDate" type="hidden" />
+		                </div>
+		              </div>
+		            </div>
+
+		            <div class="form-split__col form-split__col--optional">
+		              <div class="form-row">
+		                <label for="subLink">链接（可选）</label>
+		                <div class="link-input-group">
+		                  <input
+		                    id="subLink"
+		                    name="link"
+		                    type="text"
+		                    inputmode="url"
+		                    autocomplete="url"
+		                    placeholder="例如：https://www.netflix.com"
+		                    maxlength="200"
+		                  />
+		                  <div class="color-logo__preview link-logo__preview" id="logoPreviewWrap" aria-hidden="true">
+		                    <img id="logoPreview" alt="" />
+		                  </div>
+		                </div>
+		              </div>
+
+		              <div class="form-row">
+		                <label>结束日期（可选）</label>
+		                <div class="end-date-toggle">
+		                  <div class="end-date-toggle__slot end-date-toggle__slot--left">
+			                    <span class="end-date-toggle__status" data-role="end-date-status">默认永久持续</span>
+			                  </div>
+		                  <div class="end-date-toggle__slot end-date-toggle__slot--right">
+			                    <button
+			                      type="button"
+			                      class="btn end-date-toggle__btn"
+			                      id="btnToggleEndDate"
+			                      aria-controls="endDateControls"
+			                      aria-expanded="false"
+			                    >
+			                      设置结束日期
+			                    </button>
+			                    <button type="button" class="btn end-date-toggle__btn" id="btnCancelEndDate" hidden>
+			                      取消
+			                    </button>
+			                    <div class="end-date-controls" id="endDateControls" hidden>
+			                      <div class="date-inputs" id="endDateWheel">
+			                        <input
+			                          id="subEndYear"
+			                          name="endYear"
+			                          type="text"
+			                          inputmode="numeric"
+			                          placeholder="YYYY"
+			                          maxlength="4"
+			                          autocomplete="off"
+			                          spellcheck="false"
+			                          aria-label="结束日期年（YYYY）"
+			                        />
+			                        <span class="date-inputs__sep">/</span>
+			                        <input
+			                          id="subEndMonth"
+			                          name="endMonth"
+			                          type="text"
+			                          inputmode="numeric"
+			                          placeholder="MM"
+			                          maxlength="2"
+			                          autocomplete="off"
+			                          spellcheck="false"
+			                          aria-label="结束日期月（MM）"
+			                        />
+			                        <span class="date-inputs__sep">/</span>
+			                        <input
+			                          id="subEndDay"
+			                          name="endDay"
+			                          type="text"
+			                          inputmode="numeric"
+			                          placeholder="DD"
+			                          maxlength="2"
+			                          autocomplete="off"
+			                          spellcheck="false"
+			                          aria-label="结束日期日（DD）"
+			                        />
+			                        <input id="subEndDate" name="endDate" type="hidden" />
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+		              </div>
+
+		              <div class="form-row">
+		                <label for="subColor">色块颜色（可选）</label>
+		                <div class="color-swatches" id="colorSwatches" aria-label="推荐颜色"></div>
+		                <div class="color-logo color-logo--swatches" id="logoPalette" hidden>
+		                  <div class="color-logo__swatches" id="logoSwatches" aria-label="从链接徽标提取的颜色"></div>
+		                </div>
+		                <div class="color-custom">
+		                  <span class="color-custom__title">自定义颜色</span>
+		                  <div class="color-custom__palette">
+		                    <input id="colorPalette" type="color" aria-label="调色板" />
+		                  </div>
+		                  <input id="subColor" name="color" type="hidden" />
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+
+		          <div class="form-actions">
+		            <button type="submit" class="btn btn--primary" id="btnSubmit">保存</button>
+		            <button type="button" class="btn" id="btnCancelEdit" hidden>取消</button>
+		            <button type="button" class="btn btn--danger" id="btnDelete" hidden>删除</button>
+		          </div>
+
+	          <div class="form-error" id="formError" role="alert" aria-live="polite" hidden></div>
+	        </form>
+	      </section>
+	    </div>
+
+	    <footer class="app-footer"></footer>
+
+    <script src="./js/utils.js" defer></script>
+    <script src="./js/storage.js" defer></script>
+	    <script src="./js/timeline.js" defer></script>
+	    <script src="./js/dateWheel.js" defer></script>
+	    <script src="./js/currencies.js" defer></script>
+	    <script src="./js/currencyPicker.js" defer></script>
+	    <script src="./js/cyclePicker.js" defer></script>
+	    <script src="./js/app.js" defer></script>
+	  </body>
+	</html>
